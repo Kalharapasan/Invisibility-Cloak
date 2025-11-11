@@ -127,5 +127,14 @@ if cloak_file is not None and st.session_state.background is not None:
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=2)
         mask = cv2.morphologyEx(mask, cv2.MORPH_DILATE, kernel, iterations=1)
         mask = cv2.GaussianBlur(mask, (5, 5), 0)
+
+        mask_inv = cv2.bitwise_not(mask)
+        cloak_area = cv2.bitwise_and(bg, bg, mask=mask)
+        rest = cv2.bitwise_and(frame, frame, mask=mask_inv)
+        final = cv2.add(cloak_area, rest)
+        
+        
+        
+        
         
         
