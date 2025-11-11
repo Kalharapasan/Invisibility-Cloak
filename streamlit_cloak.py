@@ -80,3 +80,7 @@ if cloak_file is not None and st.session_state.background is not None:
      with st.spinner("Applying invisibility magic.."):
         cloak_img = Image.open(cloak_file).convert("RGB")
         frame = cv2.cvtColor(np.array(cloak_img), cv2.COLOR_RGB2BGR)
+        
+        bg = st.session_state.background
+        if (bg.shape[1], bg.shape[0]) != (frame.shape[1], frame.shape[0]):
+            bg = cv2.resize(bg, (frame.shape[1], frame.shape[0]))
