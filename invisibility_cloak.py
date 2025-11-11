@@ -118,3 +118,26 @@ if not cap.isOpened():
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 print("Camera initialized successfully!")
+
+init_hsv_window()
+set_preset(CURRENT_COLOR)
+if not SHOW_HSV:
+    cv2.destroyWindow("HSV Controls")
+
+background = None
+font = cv2.FONT_HERSHEY_SIMPLEX
+fps_start_time = time.time()
+fps_counter = 0
+fps_display = 0
+
+print("\n=== INVISIBILITY CLOAK APPLICATION ===")
+print("Controls:")
+print("  [b] - Capture background")
+print("  [1] - Red preset")
+print("  [2] - Blue preset")
+print("  [3] - Green preset")
+print("  [4] - White preset")
+print("  [h] - Toggle HSV controls")
+print("  [s] - Save current frame")
+print("  [q] - Quit")
+print("\nStarting live feed...\n")
