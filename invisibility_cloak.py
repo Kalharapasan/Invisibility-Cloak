@@ -114,7 +114,7 @@ if not cap.isOpened():
     print("ERROR: Could not open webcam.")
     print("Try changing CAM_INDEX (0/1/2) or close other apps using the camera.")
     sys.exit(1)
-    
+
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 print("Camera initialized successfully!")
@@ -152,13 +152,14 @@ while True:
         frame = cv2.flip(frame, 1)
 
     display = frame.copy()
-    
+
     fps_counter += 1
     if time.time() - fps_start_time >= 1.0:
         fps_display = fps_counter
         fps_counter = 0
         fps_start_time = time.time()
-    
+
+
     cv2.putText(display, f"[b]bg [1]red [2]blue [3]green [4]white [h]HSV [s]save [q]quit | FPS: {fps_display}",
                 (10, 25), font, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
 
@@ -210,7 +211,8 @@ while True:
             cv2.imshow(WIN_NAME, display)
             cv2.waitKey(500)
         continue
-    
+
+
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     try:
         lower1, upper1, lower2, upper2, ksz, dil_iter, blur_val = read_hsv_ranges()
@@ -229,8 +231,9 @@ while True:
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=1)
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=1)
     if dil_iter > 0:
-        mask = cv2.dilate(mask, kernel, iterations=dil_iter)cls
-    
+        mask = cv2.dilate(mask, kernel, iterations=dil_iter)
+
+
     if blur_val > 0:
         blur_size = blur_val * 2 + 1
         mask = cv2.GaussianBlur(mask, (blur_size, blur_size), 0)
@@ -287,7 +290,8 @@ while True:
     elif key == ord('s'):
         filename = f"invisibility_cloak_{int(time.time())}.jpg"
         cv2.imwrite(filename, output)
-        print(f"Saved frame as {filename}")    
+        print(f"Saved frame as {filename}")
+
 cap.release()
 cv2.destroyAllWindows()
 print("Application closed successfully!")
