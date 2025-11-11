@@ -76,3 +76,31 @@ def set_preset(color):
     cv2.setTrackbarPos("Kernel", "HSV Controls", p["kernel"])
     cv2.setTrackbarPos("Dilate", "HSV Controls", p["dilate"])
     cv2.setTrackbarPos("Blur", "HSV Controls", p["blur"])
+    
+def read_hsv_ranges():
+    H1min = cv2.getTrackbarPos("H1 min", "HSV Controls")
+    S1min = cv2.getTrackbarPos("S1 min", "HSV Controls")
+    V1min = cv2.getTrackbarPos("V1 min", "HSV Controls")
+    H1max = cv2.getTrackbarPos("H1 max", "HSV Controls")
+    S1max = cv2.getTrackbarPos("S1 max", "HSV Controls")
+    V1max = cv2.getTrackbarPos("V1 max", "HSV Controls")
+
+    H2min = cv2.getTrackbarPos("H2 min", "HSV Controls")
+    S2min = cv2.getTrackbarPos("S2 min", "HSV Controls")
+    V2min = cv2.getTrackbarPos("V2 min", "HSV Controls")
+    H2max = cv2.getTrackbarPos("H2 max", "HSV Controls")
+    S2max = cv2.getTrackbarPos("S2 max", "HSV Controls")
+    V2max = cv2.getTrackbarPos("V2 max", "HSV Controls")
+
+    kernel = cv2.getTrackbarPos("Kernel", "HSV Controls")
+    if kernel % 2 == 0:
+        kernel += 1
+    dilate_iter = max(0, cv2.getTrackbarPos("Dilate", "HSV Controls"))
+    blur_val = cv2.getTrackbarPos("Blur", "HSV Controls")
+
+    lower1 = np.array([H1min, S1min, V1min])
+    upper1 = np.array([H1max, S1max, V1max])
+    lower2 = np.array([H2min, S2min, V2min])
+    upper2 = np.array([H2max, S2max, V2max])
+
+    return (lower1, upper1, lower2, upper2, kernel, dilate_iter, blur_val)
