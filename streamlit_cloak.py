@@ -84,3 +84,5 @@ if cloak_file is not None and st.session_state.background is not None:
         bg = st.session_state.background
         if (bg.shape[1], bg.shape[0]) != (frame.shape[1], frame.shape[0]):
             bg = cv2.resize(bg, (frame.shape[1], frame.shape[0]))
+        
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
