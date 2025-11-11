@@ -31,3 +31,19 @@ if "cloak_color" not in st.session_state:
     st.session_state.cloak_color = "white"
 
 st.markdown("---")
+
+
+with col1:
+    st.subheader("📷 Step 1: Capture Background")
+    st.info("Stand out of frame before capturing!")
+    bg_file = st.camera_input("Take background photo", key="bg_camera")
+    
+    if bg_file is not None:
+        if st.button("Set as Background", type="primary"):
+            bg_img = Image.open(bg_file).convert("RGB")
+            bg = cv2.cvtColor(np.array(bg_img), cv2.COLOR_RGB2BGR)
+            st.session_state.background = bg
+            st.success("Background captured!")
+            st.balloons()
+            
+            
