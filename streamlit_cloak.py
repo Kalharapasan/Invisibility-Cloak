@@ -46,4 +46,10 @@ with col1:
             st.success("Background captured!")
             st.balloons()
             
-            
+with col2:
+    st.subheader("🎭 Step 2: Capture with Cloak")
+    st.info("Hold colored cloth and take photo")
+    cloak_file = st.camera_input("Take cloak photo", key="cloak_camera")
+    
+    if cloak_file is not None and st.session_state.background is None:
+        st.warning("⚠️ Please capture background first!")
