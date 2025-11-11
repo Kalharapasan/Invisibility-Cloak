@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image
 import io
 
-st.set_page_config(page_title="Invisibility Cloak", layout="centered", page_icon="")
+st.set_page_config(page_title="Invisibility Cloak", layout="centered", page_icon="🧙‍♂️")
 
 st.title("Invisibility Cloak Demo")
 st.markdown("### Make yourself invisible with computer vision!")
@@ -30,6 +30,8 @@ if "background" not in st.session_state:
     st.session_state.background = None
 if "cloak_color" not in st.session_state:
     st.session_state.cloak_color = "white"
+if "cloak_file" not in st.session_state:
+    st.session_state.cloak_file = None
 
 st.markdown("---")
 
@@ -54,8 +56,10 @@ with col2:
     st.info("Hold colored cloth and take photo")
     cloak_file = st.camera_input("Take cloak photo", key="cloak_camera")
     
-    if cloak_file is not None and st.session_state.background is None:
-        st.warning("Please capture background first!")
+    if cloak_file is not None:
+        st.session_state.cloak_file = cloak_file
+        if st.session_state.background is None:
+            st.warning("⚠️ Please capture background first!")
 
 
 st.markdown("---")
@@ -72,9 +76,13 @@ with color_col1:
 with color_col2:
     st.markdown("")
     st.markdown("")
-    if st.button("Clear & Restart"):
+    if st.button("🔄 Clear & Restart"):
         st.session_state.background = None
-        st.rerun()
+        st.session_state.cloak_file = None
+        try:
+            st.rerun()
+        except AttributeError:
+            st.experimental_rerun()
 
 
 if cloak_file is not None and st.session_state.background is not None:
@@ -162,7 +170,7 @@ if cloak_file is not None and st.session_state.background is not None:
         result_pil.save(buf, format="PNG")
         
         st.download_button(
-            label=" Download Result",
+            label="💾 Download Result",
             data=buf.getvalue(),
             file_name="invisibility_cloak_result.png",
             mime="image/png",
@@ -174,20 +182,21 @@ st.markdown("---")
 status_col1, status_col2 = st.columns(2)
 with status_col1:
     if st.session_state.background is not None:
-        st.success(" Background: Captured")
+        st.success("✅ Background: Captured")
     else:
-        st.error(" Background: Not captured")
+        st.error("❌ Background: Not captured")
 
 with status_col2:
-    if cloak_file is not None:
-        st.success("Cloak Photo: Captured")
+    if st.session_state.cloak_file is not None:
+        st.success("✅ Cloak Photo: Captured")
     else:
-        st.error(" Cloak Photo: Not captured")
+        st.error("❌ Cloak Photo: Not captured")
 
 
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; font-size: 0.9em;'>
-    <p> Uses HSV color space detection and image masking for the invisibility effect</p>
+    <p>🔬 Uses HSV color space detection and image masking for the invisibility effect</p>
+    <p style='margin-top: 10px;'>Made with ❤️ using OpenCV and Streamlit</p>
 </div>
 """, unsafe_allow_html=True)
