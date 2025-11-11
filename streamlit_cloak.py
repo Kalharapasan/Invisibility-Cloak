@@ -143,6 +143,20 @@ if cloak_file is not None and st.session_state.background is not None:
             st.markdown("**Invisibility Effect**")
             st.image(cv2.cvtColor(final, cv2.COLOR_BGR2RGB), use_container_width=True)
         
+        st.markdown("")
+        result_rgb = cv2.cvtColor(final, cv2.COLOR_BGR2RGB)
+        result_pil = Image.fromarray(result_rgb)
+        buf = io.BytesIO()
+        result_pil.save(buf, format="PNG")
+        
+        st.download_button(
+            label="💾 Download Result",
+            data=buf.getvalue(),
+            file_name="invisibility_cloak_result.png",
+            mime="image/png",
+            type="primary"
+        )
+        
         
         
         
