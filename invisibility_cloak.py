@@ -16,31 +16,34 @@ def nothing(_):
     pass
 
 def init_hsv_window():
-    
-    cv2.namedWindow("HSV Controls", cv2.WINDOW_NORMAL)
+    win1 = "HSV Controls"
+    win2 = "HSV Controls 2"
+
+    cv2.namedWindow(win1, cv2.WINDOW_NORMAL)
+    cv2.namedWindow(win2, cv2.WINDOW_NORMAL)
     try:
-        
-        cv2.resizeWindow("HSV Controls", 420, 560)
-        
-        cv2.moveWindow("HSV Controls", 100, 100)
+        cv2.resizeWindow(win1, 420, 560)
+        cv2.moveWindow(win1, 100, 100)
+        cv2.resizeWindow(win2, 420, 320)
+        cv2.moveWindow(win2, 540, 100)
     except Exception:
-        
         pass
-    cv2.createTrackbar("H1 min", "HSV Controls", 0, 180, nothing)
-    cv2.createTrackbar("S1 min", "HSV Controls", 120, 255, nothing)
-    cv2.createTrackbar("V1 min", "HSV Controls", 70, 255, nothing)
-    cv2.createTrackbar("H1 max", "HSV Controls", 10, 180, nothing)
-    cv2.createTrackbar("S1 max", "HSV Controls", 255, 255, nothing)
-    cv2.createTrackbar("V1 max", "HSV Controls", 255, 255, nothing)
-    cv2.createTrackbar("H2 min", "HSV Controls", 170, 180, nothing)
-    cv2.createTrackbar("S2 min", "HSV Controls", 120, 255, nothing)
-    cv2.createTrackbar("V2 min", "HSV Controls", 70, 255, nothing)
-    cv2.createTrackbar("H2 max", "HSV Controls", 180, 180, nothing)
-    cv2.createTrackbar("S2 max", "HSV Controls", 255, 255, nothing)
-    cv2.createTrackbar("V2 max", "HSV Controls", 255, 255, nothing)
-    cv2.createTrackbar("Kernel", "HSV Controls", 3, 15, nothing)
-    cv2.createTrackbar("Dilate", "HSV Controls", 1, 10, nothing)
-    cv2.createTrackbar("Blur", "HSV Controls", 0, 20, nothing)
+
+    cv2.createTrackbar("H1 min", win1, 0, 180, nothing)
+    cv2.createTrackbar("S1 min", win1, 120, 255, nothing)
+    cv2.createTrackbar("V1 min", win1, 70, 255, nothing)
+    cv2.createTrackbar("H1 max", win1, 10, 180, nothing)
+    cv2.createTrackbar("S1 max", win1, 255, 255, nothing)
+    cv2.createTrackbar("V1 max", win1, 255, 255, nothing)
+    cv2.createTrackbar("H2 min", win2, 170, 180, nothing)
+    cv2.createTrackbar("S2 min", win2, 120, 255, nothing)
+    cv2.createTrackbar("V2 min", win2, 70, 255, nothing)
+    cv2.createTrackbar("H2 max", win2, 180, 180, nothing)
+    cv2.createTrackbar("S2 max", win2, 255, 255, nothing)
+    cv2.createTrackbar("V2 max", win2, 255, 255, nothing)
+    cv2.createTrackbar("Kernel", win2, 3, 15, nothing)
+    cv2.createTrackbar("Dilate", win2, 1, 10, nothing)
+    cv2.createTrackbar("Blur", win2, 0, 20, nothing)
     
 def set_preset(color):
     presets = {
@@ -68,6 +71,7 @@ def set_preset(color):
     p = presets[color]
     H1min, S1min, V1min, H1max, S1max, V1max = p["r1"]
     H2min, S2min, V2min, H2max, S2max, V2max = p["r2"]
+   
     cv2.setTrackbarPos("H1 min", "HSV Controls", H1min)
     cv2.setTrackbarPos("S1 min", "HSV Controls", S1min)
     cv2.setTrackbarPos("V1 min", "HSV Controls", V1min)
@@ -75,16 +79,17 @@ def set_preset(color):
     cv2.setTrackbarPos("S1 max", "HSV Controls", S1max)
     cv2.setTrackbarPos("V1 max", "HSV Controls", V1max)
 
-    cv2.setTrackbarPos("H2 min", "HSV Controls", H2min)
-    cv2.setTrackbarPos("S2 min", "HSV Controls", S2min)
-    cv2.setTrackbarPos("V2 min", "HSV Controls", V2min)
-    cv2.setTrackbarPos("H2 max", "HSV Controls", H2max)
-    cv2.setTrackbarPos("S2 max", "HSV Controls", S2max)
-    cv2.setTrackbarPos("V2 max", "HSV Controls", V2max)
+    
+    cv2.setTrackbarPos("H2 min", "HSV Controls 2", H2min)
+    cv2.setTrackbarPos("S2 min", "HSV Controls 2", S2min)
+    cv2.setTrackbarPos("V2 min", "HSV Controls 2", V2min)
+    cv2.setTrackbarPos("H2 max", "HSV Controls 2", H2max)
+    cv2.setTrackbarPos("S2 max", "HSV Controls 2", S2max)
+    cv2.setTrackbarPos("V2 max", "HSV Controls 2", V2max)
 
-    cv2.setTrackbarPos("Kernel", "HSV Controls", p["kernel"])
-    cv2.setTrackbarPos("Dilate", "HSV Controls", p["dilate"])
-    cv2.setTrackbarPos("Blur", "HSV Controls", p["blur"])
+    cv2.setTrackbarPos("Kernel", "HSV Controls 2", p["kernel"])
+    cv2.setTrackbarPos("Dilate", "HSV Controls 2", p["dilate"])
+    cv2.setTrackbarPos("Blur", "HSV Controls 2", p["blur"])
     
 def read_hsv_ranges():
     H1min = cv2.getTrackbarPos("H1 min", "HSV Controls")
@@ -93,19 +98,19 @@ def read_hsv_ranges():
     H1max = cv2.getTrackbarPos("H1 max", "HSV Controls")
     S1max = cv2.getTrackbarPos("S1 max", "HSV Controls")
     V1max = cv2.getTrackbarPos("V1 max", "HSV Controls")
+    
+    H2min = cv2.getTrackbarPos("H2 min", "HSV Controls 2")
+    S2min = cv2.getTrackbarPos("S2 min", "HSV Controls 2")
+    V2min = cv2.getTrackbarPos("V2 min", "HSV Controls 2")
+    H2max = cv2.getTrackbarPos("H2 max", "HSV Controls 2")
+    S2max = cv2.getTrackbarPos("S2 max", "HSV Controls 2")
+    V2max = cv2.getTrackbarPos("V2 max", "HSV Controls 2")
 
-    H2min = cv2.getTrackbarPos("H2 min", "HSV Controls")
-    S2min = cv2.getTrackbarPos("S2 min", "HSV Controls")
-    V2min = cv2.getTrackbarPos("V2 min", "HSV Controls")
-    H2max = cv2.getTrackbarPos("H2 max", "HSV Controls")
-    S2max = cv2.getTrackbarPos("S2 max", "HSV Controls")
-    V2max = cv2.getTrackbarPos("V2 max", "HSV Controls")
-
-    kernel = cv2.getTrackbarPos("Kernel", "HSV Controls")
+    kernel = cv2.getTrackbarPos("Kernel", "HSV Controls 2")
     if kernel % 2 == 0:
         kernel += 1
-    dilate_iter = max(0, cv2.getTrackbarPos("Dilate", "HSV Controls"))
-    blur_val = cv2.getTrackbarPos("Blur", "HSV Controls")
+    dilate_iter = max(0, cv2.getTrackbarPos("Dilate", "HSV Controls 2"))
+    blur_val = cv2.getTrackbarPos("Blur", "HSV Controls 2")
 
     lower1 = np.array([H1min, S1min, V1min])
     upper1 = np.array([H1max, S1max, V1max])
@@ -131,7 +136,15 @@ print("Camera initialized successfully!")
 init_hsv_window()
 set_preset(CURRENT_COLOR)
 if not SHOW_HSV:
-    cv2.destroyWindow("HSV Controls")
+    
+    try:
+        cv2.destroyWindow("HSV Controls")
+    except Exception:
+        pass
+    try:
+        cv2.destroyWindow("HSV Controls 2")
+    except Exception:
+        pass
 
 background = None
 font = cv2.FONT_HERSHEY_SIMPLEX
@@ -187,7 +200,14 @@ while True:
                 init_hsv_window()
                 set_preset(CURRENT_COLOR)
             else:
-                cv2.destroyWindow("HSV Controls")
+                try:
+                    cv2.destroyWindow("HSV Controls")
+                except Exception:
+                    pass
+                try:
+                    cv2.destroyWindow("HSV Controls 2")
+                except Exception:
+                    pass
         elif key in (ord('1'), ord('2'), ord('3'), ord('4')):
             CURRENT_COLOR = {'1':'red','2':'blue','3':'green','4':'white'}[chr(key)]
             SHOW_HSV = True
@@ -234,7 +254,14 @@ while True:
         set_preset(CURRENT_COLOR)
         lower1, upper1, lower2, upper2, ksz, dil_iter, blur_val = read_hsv_ranges()
         if not SHOW_HSV:
-            cv2.destroyWindow("HSV Controls")
+            try:
+                cv2.destroyWindow("HSV Controls")
+            except Exception:
+                pass
+            try:
+                cv2.destroyWindow("HSV Controls 2")
+            except Exception:
+                pass
 
     mask1 = cv2.inRange(hsv, lower1, upper1)
     mask2 = cv2.inRange(hsv, lower2, upper2)
@@ -271,7 +298,14 @@ while True:
             init_hsv_window()
             set_preset(CURRENT_COLOR)
         else:
-            cv2.destroyWindow("HSV Controls")
+            try:
+                cv2.destroyWindow("HSV Controls")
+            except Exception:
+                pass
+            try:
+                cv2.destroyWindow("HSV Controls 2")
+            except Exception:
+                pass
     elif key in (ord('1'), ord('2'), ord('3'), ord('4')):
         CURRENT_COLOR = {'1':'red','2':'blue','3':'green','4':'white'}[chr(key)]
         SHOW_HSV = True
