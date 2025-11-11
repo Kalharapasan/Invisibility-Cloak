@@ -46,10 +46,29 @@ with col1:
             st.success("Background captured!")
             st.balloons()
             
+
 with col2:
-    st.subheader("🎭 Step 2: Capture with Cloak")
+    st.subheader("Step 2: Capture with Cloak")
     st.info("Hold colored cloth and take photo")
     cloak_file = st.camera_input("Take cloak photo", key="cloak_camera")
     
     if cloak_file is not None and st.session_state.background is None:
-        st.warning("⚠️ Please capture background first!")
+        st.warning("Please capture background first!")
+        
+st.markdown("---")
+st.subheader("Step 3: Select Cloak Color")
+color_col1, color_col2 = st.columns([2, 1])
+
+with color_col1:
+    st.session_state.cloak_color = st.selectbox(
+        "Choose the color of your cloth:",
+        ["white", "red", "blue", "green"],
+        index=0
+    )
+
+with color_col2:
+    st.markdown("")
+    st.markdown("")
+    if st.button("Clear & Restart"):
+        st.session_state.background = None
+        st.rerun()
