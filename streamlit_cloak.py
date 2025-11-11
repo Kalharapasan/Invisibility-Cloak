@@ -114,3 +114,8 @@ if not cap.isOpened():
     print("ERROR: Could not open webcam.")
     print("Try changing CAM_INDEX (0/1/2) or close other apps using the camera.")
     sys.exit(1)
+    
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+print("Camera initialized successfully!")
+
