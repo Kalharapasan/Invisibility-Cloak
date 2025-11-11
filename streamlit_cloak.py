@@ -72,3 +72,7 @@ with color_col2:
     if st.button("Clear & Restart"):
         st.session_state.background = None
         st.rerun()
+
+if cloak_file is not None and st.session_state.background is not None:
+    st.markdown("---")
+    st.subheader("Result: Invisibility Effect")
