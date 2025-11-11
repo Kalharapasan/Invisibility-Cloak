@@ -113,3 +113,7 @@ if cloak_file is not None and st.session_state.background is not None:
                 "upper2": None
             }
         }
+    
+    color_range = color_ranges[st.session_state.cloak_color]
+        
+        
