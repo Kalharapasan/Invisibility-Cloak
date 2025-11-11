@@ -156,6 +156,20 @@ if cloak_file is not None and st.session_state.background is not None:
             mime="image/png",
             type="primary"
         )
+    
+st.markdown("---")
+status_col1, status_col2 = st.columns(2)
+with status_col1:
+    if st.session_state.background is not None:
+        st.success("✅ Background: Captured")
+    else:
+        st.error("❌ Background: Not captured")
+
+with status_col2:
+    if cloak_file is not None:
+        st.success("✅ Cloak Photo: Captured")
+    else:
+        st.error("❌ Cloak Photo: Not captured")
         
         
         
