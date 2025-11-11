@@ -230,4 +230,61 @@ while True:
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=1)
     if dil_iter > 0:
         mask = cv2.dilate(mask, kernel, iterations=dil_iter)cls
+    
+    if blur_val > 0:
+        blur_size = blur_val * 2 + 1
+        mask = cv2.GaussianBlur(mask, (blur_size, blur_size), 0)
+
+    mask_inv = cv2.bitwise_not(mask)
+
+    cloak_area = cv2.bitwise_and(background, background, mask=mask)
+    rest = cv2.bitwise_and(frame, frame, mask=mask_inv)
+    output = cv2.add(cloak_area, rest)
+
+    cv2.putText(output, f"Preset: {CURRENT_COLOR.upper()} | Tune with [h]",
+                (10, 55), font, 0.6, (0, 255, 0), 2, cv2.LINE_AA)
+
+    cv2.imshow(WIN_NAME, output)
+
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord('q'):
+        print("Exiting...")
+        break
+    elif key == ord('h'):
+        SHOW_HSV = not SHOW_HSV
+        if SHOW_HSV:
+            init_hsv_window()
+            set_preset(CURRENT_COLOR)
+        else:
+            cv2.destroyWindow("HSV Controls")
+    elif key in (ord('1'), ord('2'), ord('3'), ord('4')):
+        CURRENT_COLOR = {'1':'red','2':'blue','3':'green','4':'white'}[chr(key)]
+        SHOW_HSV = True
+        init_hsv_window()
+        set_preset(CURRENT_COLOR)
+        print(f"Switched to {CURRENT_COLOR} preset")
+    elif key == ord('b'):
+        print("Recapturing background in 3 seconds...")
+        for i in range(3, 0, -1):
+            ok, temp = cap.read()
+            if MIRROR:
+                temp = cv2.flip(temp, 1)
+            temp_display = temp.copy()
+            cv2.putText(temp_display, f"Capturing in {i}...", 
+                       (frame.shape[1]//2 - 100, frame.shape[0]//2), 
+                       font, 2, (0, 255, 255), 3, cv2.LINE_AA)
+            cv2.imshow(WIN_NAME, temp_display)
+            cv2.waitKey(1000)
         
+        for _ in range(30):
+            ok, bg = cap.read()
+            if not ok:
+                break
+            if MIRROR:
+                bg = cv2.flip(bg, 1)
+        background = bg.copy()
+        print("Background recaptured!")
+    elif key == ord('s'):
+        filename = f"invisibility_cloak_{int(time.time())}.jpg"
+        cv2.imwrite(filename, output)
+        print(f"Saved frame as {filename}")    
