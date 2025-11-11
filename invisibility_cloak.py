@@ -16,7 +16,16 @@ def nothing(_):
     pass
 
 def init_hsv_window():
-    cv2.namedWindow("HSV Controls", cv2.WINDOW_AUTOSIZE)
+    
+    cv2.namedWindow("HSV Controls", cv2.WINDOW_NORMAL)
+    try:
+        
+        cv2.resizeWindow("HSV Controls", 420, 560)
+        
+        cv2.moveWindow("HSV Controls", 100, 100)
+    except Exception:
+        
+        pass
     cv2.createTrackbar("H1 min", "HSV Controls", 0, 180, nothing)
     cv2.createTrackbar("S1 min", "HSV Controls", 120, 255, nothing)
     cv2.createTrackbar("V1 min", "HSV Controls", 70, 255, nothing)
@@ -198,14 +207,19 @@ while True:
                 cv2.imshow(WIN_NAME, temp_display)
                 cv2.waitKey(1000)
             
+            bg = None
             for _ in range(30):
-                ok, bg = cap.read()
+                ok, temp_bg = cap.read()
                 if not ok:
-                    break
+                    continue
                 if MIRROR:
-                    bg = cv2.flip(bg, 1)
-            background = bg.copy()
-            print("Background captured successfully!")
+                    temp_bg = cv2.flip(temp_bg, 1)
+                bg = temp_bg
+            if bg is None:
+                print("ERROR: Failed to capture background from camera.")
+            else:
+                background = bg.copy()
+                print("Background captured successfully!")
             cv2.putText(display, "Background captured! Now wear your cloak.", 
                        (10, 115), font, 0.7, (0, 200, 0), 2, cv2.LINE_AA)
             cv2.imshow(WIN_NAME, display)
@@ -277,14 +291,19 @@ while True:
             cv2.imshow(WIN_NAME, temp_display)
             cv2.waitKey(1000)
         
+        bg = None
         for _ in range(30):
-            ok, bg = cap.read()
+            ok, temp_bg = cap.read()
             if not ok:
-                break
+                continue
             if MIRROR:
-                bg = cv2.flip(bg, 1)
-        background = bg.copy()
-        print("Background recaptured!")
+                temp_bg = cv2.flip(temp_bg, 1)
+            bg = temp_bg
+        if bg is None:
+            print("ERROR: Failed to recapture background from camera.")
+        else:
+            background = bg.copy()
+            print("Background recaptured!")
     elif key == ord('s'):
         filename = f"invisibility_cloak_{int(time.time())}.jpg"
         cv2.imwrite(filename, output)
