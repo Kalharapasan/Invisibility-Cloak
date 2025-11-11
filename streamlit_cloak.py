@@ -25,3 +25,9 @@ with st.expander("ℹ️ How to Use", expanded=True):
     - Make sure the cloth covers the area you want to make invisible
     """)
 
+if "background" not in st.session_state:
+    st.session_state.background = None
+if "cloak_color" not in st.session_state:
+    st.session_state.cloak_color = "white"
+
+st.markdown("---")
