@@ -211,3 +211,23 @@ while True:
             cv2.imshow(WIN_NAME, display)
             cv2.waitKey(500)
         continue
+    
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    try:
+        lower1, upper1, lower2, upper2, ksz, dil_iter, blur_val = read_hsv_ranges()
+    except cv2.error:
+        init_hsv_window()
+        set_preset(CURRENT_COLOR)
+        lower1, upper1, lower2, upper2, ksz, dil_iter, blur_val = read_hsv_ranges()
+        if not SHOW_HSV:
+            cv2.destroyWindow("HSV Controls")
+
+    mask1 = cv2.inRange(hsv, lower1, upper1)
+    mask2 = cv2.inRange(hsv, lower2, upper2)
+    mask = cv2.bitwise_or(mask1, mask2)
+
+    kernel = np.ones((ksz, ksz), np.uint8)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=1)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=1)
+    if dil_iter > 0:
+        mask = cv2.dilate(mask, kernel, iterations=dil_iter)
