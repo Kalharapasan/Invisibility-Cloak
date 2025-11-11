@@ -86,3 +86,30 @@ if cloak_file is not None and st.session_state.background is not None:
             bg = cv2.resize(bg, (frame.shape[1], frame.shape[0]))
         
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        
+        color_ranges = {
+            "white": {
+                "lower1": np.array([0, 0, 200]),
+                "upper1": np.array([180, 40, 255]),
+                "lower2": None,
+                "upper2": None
+            },
+            "red": {
+                "lower1": np.array([0, 120, 70]),
+                "upper1": np.array([10, 255, 255]),
+                "lower2": np.array([170, 120, 70]),
+                "upper2": np.array([180, 255, 255])
+            },
+            "blue": {
+                "lower1": np.array([94, 80, 2]),
+                "upper1": np.array([126, 255, 255]),
+                "lower2": None,
+                "upper2": None
+            },
+            "green": {
+                "lower1": np.array([36, 50, 70]),
+                "upper1": np.array([89, 255, 255]),
+                "lower2": None,
+                "upper2": None
+            }
+        }
