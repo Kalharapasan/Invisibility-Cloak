@@ -104,3 +104,17 @@ def read_hsv_ranges():
     upper2 = np.array([H2max, S2max, V2max])
 
     return (lower1, upper1, lower2, upper2, kernel, dilate_iter, blur_val)
+
+print("Initializing camera...")
+
+cap = cv2.VideoCapture(CAM_INDEX, BACKEND)
+if not cap.isOpened():
+    cap = cv2.VideoCapture(CAM_INDEX)
+if not cap.isOpened():
+    print("ERROR: Could not open webcam.")
+    print("Try changing CAM_INDEX (0/1/2) or close other apps using the camera.")
+    sys.exit(1)
+
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+print("Camera initialized successfully!")
