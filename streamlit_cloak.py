@@ -133,7 +133,15 @@ if cloak_file is not None and st.session_state.background is not None:
         rest = cv2.bitwise_and(frame, frame, mask=mask_inv)
         final = cv2.add(cloak_area, rest)
         
+        result_col1, result_col2 = st.columns(2)
         
+        with result_col1:
+            st.markdown("**Original Photo**")
+            st.image(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB), use_container_width=True)
+        
+        with result_col2:
+            st.markdown("**Invisibility Effect**")
+            st.image(cv2.cvtColor(final, cv2.COLOR_BGR2RGB), use_container_width=True)
         
         
         
