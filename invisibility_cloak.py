@@ -154,4 +154,9 @@ while True:
 
     display = frame.copy()
     
+    fps_counter += 1
+    if time.time() - fps_start_time >= 1.0:
+        fps_display = fps_counter
+        fps_counter = 0
+        fps_start_time = time.time()
     
