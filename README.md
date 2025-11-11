@@ -317,9 +317,7 @@ Contributions are welcome! Here's how you can help:
 - Update documentation for new features
 - Test on multiple platforms if possible
 
-## 📝 License
-
-This project is open source and available under the MIT License.
+## 📝 [License](./LICENSE.md): Proprietary – Permission Required
 
 ## 👨‍💻 Author
 
