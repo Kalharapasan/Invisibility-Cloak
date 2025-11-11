@@ -32,3 +32,47 @@ def init_hsv_window():
     cv2.createTrackbar("Kernel", "HSV Controls", 3, 15, nothing)
     cv2.createTrackbar("Dilate", "HSV Controls", 1, 10, nothing)
     cv2.createTrackbar("Blur", "HSV Controls", 0, 20, nothing)
+
+def set_preset(color):
+    presets = {
+        "red":  {
+            "r1": (0, 120, 70, 10, 255, 255),
+            "r2": (170, 120, 70, 180, 255, 255),
+            "kernel": 5, "dilate": 2, "blur": 5
+        },
+        "blue": {
+            "r1": (94, 80, 2, 126, 255, 255),
+            "r2": (0, 0, 0, 0, 0, 0),
+            "kernel": 5, "dilate": 2, "blur": 5
+        },
+        "green":{
+            "r1": (36, 50, 70, 89, 255, 255),
+            "r2": (0, 0, 0, 0, 0, 0),
+            "kernel": 5, "dilate": 2, "blur": 5
+        },
+        "white":{
+            "r1": (0, 0, 200, 180, 40, 255),
+            "r2": (0, 0, 0, 0, 0, 0),
+            "kernel": 5, "dilate": 2, "blur": 5
+        }
+    }
+    p = presets[color]
+    H1min, S1min, V1min, H1max, S1max, V1max = p["r1"]
+    H2min, S2min, V2min, H2max, S2max, V2max = p["r2"]
+    cv2.setTrackbarPos("H1 min", "HSV Controls", H1min)
+    cv2.setTrackbarPos("S1 min", "HSV Controls", S1min)
+    cv2.setTrackbarPos("V1 min", "HSV Controls", V1min)
+    cv2.setTrackbarPos("H1 max", "HSV Controls", H1max)
+    cv2.setTrackbarPos("S1 max", "HSV Controls", S1max)
+    cv2.setTrackbarPos("V1 max", "HSV Controls", V1max)
+
+    cv2.setTrackbarPos("H2 min", "HSV Controls", H2min)
+    cv2.setTrackbarPos("S2 min", "HSV Controls", S2min)
+    cv2.setTrackbarPos("V2 min", "HSV Controls", V2min)
+    cv2.setTrackbarPos("H2 max", "HSV Controls", H2max)
+    cv2.setTrackbarPos("S2 max", "HSV Controls", S2max)
+    cv2.setTrackbarPos("V2 max", "HSV Controls", V2max)
+
+    cv2.setTrackbarPos("Kernel", "HSV Controls", p["kernel"])
+    cv2.setTrackbarPos("Dilate", "HSV Controls", p["dilate"])
+    cv2.setTrackbarPos("Blur", "HSV Controls", p["blur"])
