@@ -158,3 +158,55 @@ while True:
         fps_display = fps_counter
         fps_counter = 0
         fps_start_time = time.time()
+    
+    cv2.putText(display, f"[b]bg [1]red [2]blue [3]green [4]white [h]HSV [s]save [q]quit | FPS: {fps_display}",
+                (10, 25), font, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
+
+    if background is None:
+        cv2.putText(display, "STEP 1: Clear the frame, then press [b] to capture background",
+                    (10, 55), font, 0.6, (0, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(display, "STEP 2: Wear colored cloth and press [1/2/3/4] for color preset",
+                    (10, 85), font, 0.6, (0, 255, 255), 2, cv2.LINE_AA)
+        cv2.imshow(WIN_NAME, display)
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord('q'):
+            break
+        elif key == ord('h'):
+            SHOW_HSV = not SHOW_HSV
+            if SHOW_HSV:
+                init_hsv_window()
+                set_preset(CURRENT_COLOR)
+            else:
+                cv2.destroyWindow("HSV Controls")
+        elif key in (ord('1'), ord('2'), ord('3'), ord('4')):
+            CURRENT_COLOR = {'1':'red','2':'blue','3':'green','4':'white'}[chr(key)]
+            SHOW_HSV = True
+            init_hsv_window()
+            set_preset(CURRENT_COLOR)
+            print(f"Switched to {CURRENT_COLOR} preset")
+        elif key == ord('b'):
+            print("Capturing background in 3 seconds... Clear the frame!")
+            for i in range(3, 0, -1):
+                ok, temp = cap.read()
+                if MIRROR:
+                    temp = cv2.flip(temp, 1)
+                temp_display = temp.copy()
+                cv2.putText(temp_display, f"Capturing in {i}...", 
+                           (frame.shape[1]//2 - 100, frame.shape[0]//2), 
+                           font, 2, (0, 255, 255), 3, cv2.LINE_AA)
+                cv2.imshow(WIN_NAME, temp_display)
+                cv2.waitKey(1000)
+            
+            for _ in range(30):
+                ok, bg = cap.read()
+                if not ok:
+                    break
+                if MIRROR:
+                    bg = cv2.flip(bg, 1)
+            background = bg.copy()
+            print("Background captured successfully!")
+            cv2.putText(display, "Background captured! Now wear your cloak.", 
+                       (10, 115), font, 0.7, (0, 200, 0), 2, cv2.LINE_AA)
+            cv2.imshow(WIN_NAME, display)
+            cv2.waitKey(500)
+        continue
