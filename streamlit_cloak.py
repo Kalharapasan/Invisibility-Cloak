@@ -161,20 +161,20 @@ st.markdown("---")
 status_col1, status_col2 = st.columns(2)
 with status_col1:
     if st.session_state.background is not None:
-        st.success("✅ Background: Captured")
+        st.success("Background: Captured")
     else:
-        st.error("❌ Background: Not captured")
+        st.error("Background: Not captured")
 
 with status_col2:
     if cloak_file is not None:
-        st.success("✅ Cloak Photo: Captured")
+        st.success("Cloak Photo: Captured")
     else:
-        st.error("❌ Cloak Photo: Not captured")
+        st.error("Cloak Photo: Not captured")
 
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; font-size: 0.9em;'>
-    <p>🔬 Uses HSV color space detection and image masking for the invisibility effect</p>
+    <p>Uses HSV color space detection and image masking for the invisibility effect</p>
 </div>
 """, unsafe_allow_html=True)
         
