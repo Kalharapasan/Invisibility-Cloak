@@ -4,12 +4,12 @@ import numpy as np
 from PIL import Image
 import io
 
-st.set_page_config(page_title="Invisibility Cloak", layout="centered", page_icon="🧙")
+st.set_page_config(page_title="Invisibility Cloak", layout="centered", page_icon="")
 
-st.title("🧙‍♂️ Invisibility Cloak Demo")
+st.title("Invisibility Cloak Demo")
 st.markdown("### Make yourself invisible with computer vision!")
 
-with st.expander("ℹ️ How to Use", expanded=True):
+with st.expander("ℹ How to Use", expanded=True):
     st.markdown("""
     **Step-by-step instructions:**
     
@@ -25,6 +25,7 @@ with st.expander("ℹ️ How to Use", expanded=True):
     - Make sure the cloth covers the area you want to make invisible
     """)
 
+
 if "background" not in st.session_state:
     st.session_state.background = None
 if "cloak_color" not in st.session_state:
@@ -32,6 +33,8 @@ if "cloak_color" not in st.session_state:
 
 st.markdown("---")
 
+
+col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("📷 Step 1: Capture Background")
@@ -45,16 +48,16 @@ with col1:
             st.session_state.background = bg
             st.success("Background captured!")
             st.balloons()
-            
 
 with col2:
-    st.subheader("Step 2: Capture with Cloak")
+    st.subheader("🎭 Step 2: Capture with Cloak")
     st.info("Hold colored cloth and take photo")
     cloak_file = st.camera_input("Take cloak photo", key="cloak_camera")
     
     if cloak_file is not None and st.session_state.background is None:
         st.warning("Please capture background first!")
-        
+
+
 st.markdown("---")
 st.subheader("Step 3: Select Cloak Color")
 color_col1, color_col2 = st.columns([2, 1])
@@ -73,20 +76,25 @@ with color_col2:
         st.session_state.background = None
         st.rerun()
 
+
 if cloak_file is not None and st.session_state.background is not None:
     st.markdown("---")
     st.subheader("Result: Invisibility Effect")
-
-    with st.spinner("Applying invisibility magic.."):
+    
+    with st.spinner("Applying invisibility magic..."):
+      
         cloak_img = Image.open(cloak_file).convert("RGB")
         frame = cv2.cvtColor(np.array(cloak_img), cv2.COLOR_RGB2BGR)
-        
+
+       
         bg = st.session_state.background
         if (bg.shape[1], bg.shape[0]) != (frame.shape[1], frame.shape[0]):
             bg = cv2.resize(bg, (frame.shape[1], frame.shape[0]))
-        
+
+  
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         
+     
         color_ranges = {
             "white": {
                 "lower1": np.array([0, 0, 200]),
@@ -113,16 +121,19 @@ if cloak_file is not None and st.session_state.background is not None:
                 "upper2": None
             }
         }
-    
+        
+       
         color_range = color_ranges[st.session_state.cloak_color]
         
+   
         mask1 = cv2.inRange(hsv, color_range["lower1"], color_range["upper1"])
         if color_range["lower2"] is not None:
             mask2 = cv2.inRange(hsv, color_range["lower2"], color_range["upper2"])
             mask = cv2.bitwise_or(mask1, mask2)
         else:
             mask = mask1
-        
+
+     
         kernel = np.ones((5, 5), np.uint8)
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=2)
         mask = cv2.morphologyEx(mask, cv2.MORPH_DILATE, kernel, iterations=1)
@@ -132,7 +143,7 @@ if cloak_file is not None and st.session_state.background is not None:
         cloak_area = cv2.bitwise_and(bg, bg, mask=mask)
         rest = cv2.bitwise_and(frame, frame, mask=mask_inv)
         final = cv2.add(cloak_area, rest)
-        
+
         result_col1, result_col2 = st.columns(2)
         
         with result_col1:
@@ -143,6 +154,7 @@ if cloak_file is not None and st.session_state.background is not None:
             st.markdown("**Invisibility Effect**")
             st.image(cv2.cvtColor(final, cv2.COLOR_BGR2RGB), use_container_width=True)
         
+  
         st.markdown("")
         result_rgb = cv2.cvtColor(final, cv2.COLOR_BGR2RGB)
         result_pil = Image.fromarray(result_rgb)
@@ -150,34 +162,32 @@ if cloak_file is not None and st.session_state.background is not None:
         result_pil.save(buf, format="PNG")
         
         st.download_button(
-            label="💾 Download Result",
+            label=" Download Result",
             data=buf.getvalue(),
             file_name="invisibility_cloak_result.png",
             mime="image/png",
             type="primary"
         )
-    
+
+
 st.markdown("---")
 status_col1, status_col2 = st.columns(2)
 with status_col1:
     if st.session_state.background is not None:
-        st.success("Background: Captured")
+        st.success(" Background: Captured")
     else:
-        st.error("Background: Not captured")
+        st.error(" Background: Not captured")
 
 with status_col2:
     if cloak_file is not None:
         st.success("Cloak Photo: Captured")
     else:
-        st.error("Cloak Photo: Not captured")
+        st.error(" Cloak Photo: Not captured")
+
 
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; font-size: 0.9em;'>
-    <p>Uses HSV color space detection and image masking for the invisibility effect</p>
+    <p> Uses HSV color space detection and image masking for the invisibility effect</p>
 </div>
 """, unsafe_allow_html=True)
-        
-        
-        
-        
