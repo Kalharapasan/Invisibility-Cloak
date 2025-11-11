@@ -41,9 +41,9 @@ def init_hsv_window():
     cv2.createTrackbar("H2 max", win2, 180, 180, nothing)
     cv2.createTrackbar("S2 max", win2, 255, 255, nothing)
     cv2.createTrackbar("V2 max", win2, 255, 255, nothing)
-    cv2.createTrackbar("Kernel", win2, 3, 15, nothing)
-    cv2.createTrackbar("Dilate", win2, 1, 10, nothing)
-    cv2.createTrackbar("Blur", win2, 0, 20, nothing)
+    cv2.createTrackbar("Kernel", win2, 5, 15, nothing)
+    cv2.createTrackbar("Dilate", win2, 2, 10, nothing)
+    cv2.createTrackbar("Blur", win2, 5, 20, nothing)
     
 def set_preset(color):
     presets = {
@@ -107,10 +107,11 @@ def read_hsv_ranges():
     V2max = cv2.getTrackbarPos("V2 max", "HSV Controls 2")
 
     kernel = cv2.getTrackbarPos("Kernel", "HSV Controls 2")
+    kernel = max(1, kernel)  # Ensure kernel is at least 1
     if kernel % 2 == 0:
         kernel += 1
     dilate_iter = max(0, cv2.getTrackbarPos("Dilate", "HSV Controls 2"))
-    blur_val = cv2.getTrackbarPos("Blur", "HSV Controls 2")
+    blur_val = max(0, cv2.getTrackbarPos("Blur", "HSV Controls 2"))
 
     lower1 = np.array([H1min, S1min, V1min])
     upper1 = np.array([H1max, S1max, V1max])
