@@ -144,3 +144,14 @@ print("\nStarting live feed...\n")
 
 
 while True:
+    ok, frame = cap.read()
+    if not ok:
+        print("Failed to read frame from camera.")
+        break
+
+    if MIRROR:
+        frame = cv2.flip(frame, 1)
+
+    display = frame.copy()
+    
+    
