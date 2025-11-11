@@ -361,7 +361,6 @@ while True:
         cv2.putText(display, "No colors selected! Press [1-7] to select colors",
                     (10, 55), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
         cv2.imshow(WIN_NAME, display)
-        key = cv2.waitKey(1) & 0xFF
     else:
         # Create combined mask for all selected colors
         combined_mask = np.zeros(frame.shape[:2], dtype=np.uint8)
