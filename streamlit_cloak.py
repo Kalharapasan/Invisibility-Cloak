@@ -288,3 +288,6 @@ while True:
         filename = f"invisibility_cloak_{int(time.time())}.jpg"
         cv2.imwrite(filename, output)
         print(f"Saved frame as {filename}")    
+cap.release()
+cv2.destroyAllWindows()
+print("Application closed successfully!")
