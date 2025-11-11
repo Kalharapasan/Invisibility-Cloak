@@ -77,7 +77,7 @@ if cloak_file is not None and st.session_state.background is not None:
     st.markdown("---")
     st.subheader("Result: Invisibility Effect")
 
-     with st.spinner("Applying invisibility magic.."):
+    with st.spinner("Applying invisibility magic.."):
         cloak_img = Image.open(cloak_file).convert("RGB")
         frame = cv2.cvtColor(np.array(cloak_img), cv2.COLOR_RGB2BGR)
         
@@ -114,6 +114,13 @@ if cloak_file is not None and st.session_state.background is not None:
             }
         }
     
-    color_range = color_ranges[st.session_state.cloak_color]
+        color_range = color_ranges[st.session_state.cloak_color]
+        
+        mask1 = cv2.inRange(hsv, color_range["lower1"], color_range["upper1"])
+        if color_range["lower2"] is not None:
+            mask2 = cv2.inRange(hsv, color_range["lower2"], color_range["upper2"])
+            mask = cv2.bitwise_or(mask1, mask2)
+        else:
+            mask = mask1
         
         
