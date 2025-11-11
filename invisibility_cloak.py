@@ -141,3 +141,6 @@ print("  [h] - Toggle HSV controls")
 print("  [s] - Save current frame")
 print("  [q] - Quit")
 print("\nStarting live feed...\n")
+
+
+while True:
