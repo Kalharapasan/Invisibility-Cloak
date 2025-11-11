@@ -170,6 +170,13 @@ with status_col2:
         st.success("✅ Cloak Photo: Captured")
     else:
         st.error("❌ Cloak Photo: Not captured")
+
+st.markdown("---")
+st.markdown("""
+<div style='text-align: center; color: #666; font-size: 0.9em;'>
+    <p>🔬 Uses HSV color space detection and image masking for the invisibility effect</p>
+</div>
+""", unsafe_allow_html=True)
         
         
         
