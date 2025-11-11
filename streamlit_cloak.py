@@ -76,3 +76,7 @@ with color_col2:
 if cloak_file is not None and st.session_state.background is not None:
     st.markdown("---")
     st.subheader("Result: Invisibility Effect")
+
+     with st.spinner("Applying invisibility magic.."):
+        cloak_img = Image.open(cloak_file).convert("RGB")
+        frame = cv2.cvtColor(np.array(cloak_img), cv2.COLOR_RGB2BGR)
